@@ -1,0 +1,24 @@
+@use "../../variables";
+
+.header {
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+    background-color: variables.$header-color;
+    color: variables.$text-primary-color;
+  }
+
+  &__left {
+    display: flex;
+
+    &-search {
+      margin-left: 15px;
+    }
+  }
+}
+
+.link {
+  text-decoration: none;
+  color: unset;
+}

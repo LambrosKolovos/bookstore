@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import BookItem from "../components/BookItem/BookItem";
 import Filters from "../components/Filters/Filters";
@@ -14,22 +14,31 @@ function BookSearchPage() {
     (state) => state.filters
   );
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
   const navigate = useNavigate();
 
-  const applyFilters = () => {
-    const tempArr = filteredData;
-
-    if (azSort) tempArr.sort((a, b) => a.title.localeCompare(b.title));
-    if (zaSort) tempArr.sort((b, a) => a.title.localeCompare(b.title));
-
+  const filteredBooks = useMemo(() => {
+    const tempArr = [...booksDB];
+    if (azSort) return tempArr.sort((a, b) => a.title.localeCompare(b.title));
+    if (zaSort) return tempArr.sort((b, a) => a.title.localeCompare(b.title));
     if (newSort)
-      tempArr.sort((a, b) => new Date(b.published) - new Date(a.published));
+      return tempArr.sort(
+        (a, b) => new Date(b.published) - new Date(a.published)
+      );
     if (oldSort)
-      tempArr.sort((a, b) => new Date(a.published) - new Date(b.published));
+      return tempArr.sort(
+        (a, b) => new Date(a.published) - new Date(b.published)
+      );
 
-    if (tempArr.length) setFilteredData(tempArr);
-  };
+    return tempArr;
+  }, [booksDB, azSort, zaSort, newSort, oldSort]);
+
+  const searchedBooks = useMemo(() => {
+    return filteredBooks.filter(
+      (book) =>
+        book.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        book.rating >= rating
+    );
+  }, [filteredBooks, searchQuery, rating]);
 
   const viewBook = (book) => {
     console.log(book.isbn);
@@ -40,19 +49,6 @@ function BookSearchPage() {
       },
     });
   };
-
-  useEffect(() => {
-    setFilteredData(
-      booksDB.filter(
-        (book) =>
-          book.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-          book.rating >= rating
-      )
-    );
-  }, [searchQuery, rating]);
-  useEffect(() => {
-    applyFilters();
-  }, [filteredData, azSort, zaSort, newSort, oldSort]);
 
   return (
     <div>
@@ -73,7 +69,7 @@ function BookSearchPage() {
 
         <Filters />
         <div className="books__container">
-          {filteredData.map((item) => {
+          {searchedBooks.map((item) => {
             return (
               <BookItem
                 key={item.isbn}

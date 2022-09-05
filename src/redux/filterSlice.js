@@ -36,8 +36,8 @@ export const filterSlice = createSlice({
       }
     },
 
-    setRatingFilter: (state, rating) => {
-      state.rating = rating;
+    setRatingFilter: (state, action) => {
+      state.rating = action.payload;
     },
   },
 });

@@ -3,10 +3,14 @@
 .bookitem {
   &__container {
     width: 200px;
-    margin: 30px;
+    margin: 15px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    background-color: #38a8a4;
 
     &:hover {
       cursor: pointer;

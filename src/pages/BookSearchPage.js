@@ -1,4 +1,4 @@
-import { React, useState, useMemo, useEffect } from "react";
+import { React, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import BookItem from "../components/BookItem/BookItem";
 import Filters from "../components/Filters/Filters";
@@ -6,6 +6,7 @@ import Header from "../components/Header/Header";
 import TextField from "@mui/material/TextField";
 
 import "./_bookSearchPage.scss";
+import { useNavigate } from "react-router-dom";
 
 function BookSearchPage() {
   const { booksDB } = useSelector((state) => state.books);
@@ -14,16 +15,7 @@ function BookSearchPage() {
   );
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-
-  useEffect(() => {
-    setFilteredData(
-      booksDB.filter(
-        (book) =>
-          book.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-          book.rating >= rating
-      )
-    );
-  }, [searchQuery, rating]);
+  const navigate = useNavigate();
 
   const applyFilters = () => {
     const tempArr = filteredData;
@@ -39,6 +31,25 @@ function BookSearchPage() {
     if (tempArr.length) setFilteredData(tempArr);
   };
 
+  const viewBook = (book) => {
+    console.log(book.isbn);
+    navigate("../view/" + book.isbn, {
+      replace: true,
+      state: {
+        bookToDisplay: book,
+      },
+    });
+  };
+
+  useEffect(() => {
+    setFilteredData(
+      booksDB.filter(
+        (book) =>
+          book.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          book.rating >= rating
+      )
+    );
+  }, [searchQuery, rating]);
   useEffect(() => {
     applyFilters();
   }, [filteredData, azSort, zaSort, newSort, oldSort]);
@@ -70,6 +81,7 @@ function BookSearchPage() {
                 title={item.title}
                 author={item.author}
                 rating={item.rating}
+                onClick={() => viewBook(item)}
               />
             );
           })}

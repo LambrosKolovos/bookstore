@@ -2,9 +2,9 @@ import React from "react";
 import "./_bookitem.scss";
 import Rating from "@mui/material/Rating";
 
-function BookItem({ image, title, author, rating }) {
+function BookItem({ image, title, author, rating, onClick }) {
   return (
-    <div className="bookitem__container">
+    <div className="bookitem__container" onClick={onClick}>
       <img src={image} height="300" width="200" />
       <div className="bookitem__title">{title}</div>
       <div className="bookitem__author">{author}</div>

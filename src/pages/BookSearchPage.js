@@ -6,7 +6,10 @@ import Header from "../components/Header/Header";
 import TextField from "@mui/material/TextField";
 
 import "./_bookSearchPage.scss";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function BookSearchPage() {
   const { booksDB } = useSelector((state) => state.books);
@@ -14,7 +17,23 @@ function BookSearchPage() {
     (state) => state.filters
   );
   const [searchQuery, setSearchQuery] = useState("");
+
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const { bookAdded } = state || false;
+
+  useEffect(() => {
+    if (bookAdded)
+      toast.success("Book successfully added", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+  }, [bookAdded]);
 
   const filteredBooks = useMemo(() => {
     const tempArr = [...booksDB];
@@ -52,6 +71,7 @@ function BookSearchPage() {
 
   return (
     <div>
+      {bookAdded && <ToastContainer />}
       <Header />
       <div className="main__container">
         <TextField

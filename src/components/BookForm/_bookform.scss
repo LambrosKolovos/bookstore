@@ -1,0 +1,64 @@
+@use "../../variables";
+.bookform {
+  &__container {
+    display: flex;
+    border: 1px solid variables.$text-dark-color;
+    margin: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    justify-content: space-around;
+  }
+
+  &__leftcol {
+    display: flex;
+    flex-direction: column;
+    flex: 0.4;
+
+    .MuiTextField-root {
+      margin-top: 20px !important;
+      margin-left: 20px !important;
+    }
+  }
+
+  &__rightcol {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    img {
+      margin-top: 40px;
+      margin-bottom: 40px;
+    }
+
+    button {
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 40px;
+    }
+  }
+
+  &__sectionheader {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: variables.$text-dark-color;
+  }
+
+  &__error {
+    color: darkred;
+    margin-top: 5px;
+    margin-left: 20px;
+    font-size: 12px;
+    font-weight: bold;
+
+    &-author {
+      margin-left: unset;
+      color: darkred;
+      margin-top: 5px;
+      margin-left: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+}

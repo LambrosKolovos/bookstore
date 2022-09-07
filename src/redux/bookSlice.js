@@ -10,12 +10,13 @@ export const bookSlice = createSlice({
   initialState,
   reducers: {
     insertBook: (state, book) => {
-      state.booksDB = [...state.booksDB, book];
+      state.booksDB = [...state.booksDB, book.payload];
+      console.log(state.booksDB);
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { increment } = bookSlice.actions;
+export const { insertBook } = bookSlice.actions;
 
 export default bookSlice.reducer;

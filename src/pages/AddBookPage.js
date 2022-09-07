@@ -1,11 +1,12 @@
 import React from "react";
+import BookForm from "../components/BookForm/BookForm";
 import Header from "../components/Header/Header";
 
 function AddBookPage() {
   return (
     <div>
       <Header />
-      <div>Add book page</div>
+      <BookForm />
     </div>
   );
 }

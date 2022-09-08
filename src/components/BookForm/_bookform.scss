@@ -2,32 +2,76 @@
 .bookform {
   &__container {
     display: flex;
-    border: 1px solid variables.$text-dark-color;
     margin: 40px;
     padding-top: 20px;
     padding-bottom: 20px;
     justify-content: space-around;
+
+    @media screen and (max-width: variables.$mobile-bp) {
+      flex-direction: column;
+    }
   }
 
   &__leftcol {
     display: flex;
     flex-direction: column;
-    flex: 0.4;
+    flex: 0.5;
+    -webkit-box-shadow: -4px 3px 20px -2px rgba(0, 0, 0, 0.44);
+    box-shadow: -4px 3px 20px -2px rgba(0, 0, 0, 0.44);
+    justify-content: center;
 
     .MuiTextField-root {
       margin-top: 20px !important;
       margin-left: 20px !important;
+      margin-right: 20px !important;
+    }
+
+    .MuiInputBase-root {
+      position: relative;
+    }
+
+    .MuiInputAdornment-root {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
     }
   }
 
+  &__detailscontainer {
+    display: flex;
+    flex-direction: column;
+    .author__container:first-of-type::after {
+      content: "";
+      width: 50px;
+      height: 35px;
+    }
+    @media screen and (max-width: variables.$mobile-bp) {
+      margin-top: 30px;
+      margin-left: 50px;
+    }
+    @media screen and (max-width: 600px) {
+      margin-top: unset;
+      margin-left: unset;
+    }
+  }
   &__rightcol {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    padding: 30px;
+    @media screen and (max-width: variables.$mobile-bp) {
+      flex-direction: row;
+    }
+    @media screen and (max-width: 600px) {
+      flex-direction: column;
+      align-items: center;
+    }
 
     img {
-      margin-top: 40px;
+      margin-top: 30px;
       margin-bottom: 40px;
+      -webkit-box-shadow: -4px 3px 20px -2px rgba(0, 0, 0, 0.44);
+      box-shadow: -4px 3px 20px -2px rgba(0, 0, 0, 0.44);
     }
 
     button {
@@ -49,7 +93,7 @@
     color: darkred;
     margin-top: 5px;
     margin-left: 20px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
 
     &-author {
@@ -57,8 +101,40 @@
       color: darkred;
       margin-top: 5px;
       margin-left: 20px;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: bold;
     }
+  }
+
+  &__submit {
+    padding: 20px;
+    margin-top: 50px;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    border-radius: 5px;
+    border: 1px solid black;
+    background: variables.$text-dark-color;
+    color: white;
+
+    &:hover {
+      background: white;
+      color: variables.$text-dark-color;
+      border: 1px solid variables.$text-dark-color;
+      cursor: pointer;
+    }
+  }
+}
+
+.author {
+  &__container {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+  }
+  &__removeicon {
+    font-size: 35px;
+    margin-left: 15px;
+    color: variables.$text-dark-color;
   }
 }

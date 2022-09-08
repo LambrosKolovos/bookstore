@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
 import placeholder from "../../assets/placeholder.png";
-import { Rating } from "@mui/material";
+import { InputAdornment, Rating } from "@mui/material";
 
 import "./_bookform.scss";
 import AuthorField from "./AuthorField";
@@ -32,15 +32,10 @@ function BookForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setBookToAdd((currentBook) => ({
-      ...currentBook,
-      author: bookToAdd.author.filter((name) => name !== " "),
-    }));
-
     if (formIsValid()) {
       dispatch(insertBook(bookToAdd));
-
       navigate("../search", {
+        replace: true,
         state: {
           bookAdded: true,
         },
@@ -59,6 +54,8 @@ function BookForm() {
   const handleAuthorChange = (e, idx) => {
     const tempArr = bookToAdd.author;
     tempArr[idx] = e.target.value;
+    tempArr[idx] =
+      tempArr[idx].charAt(0) === " " ? tempArr[idx].substring(1) : tempArr[idx];
     setBookToAdd((currentBook) => ({
       ...currentBook,
       author: tempArr,
@@ -67,7 +64,6 @@ function BookForm() {
 
   const addAuthorField = (e) => {
     e.preventDefault();
-
     setBookToAdd((currentBook) => ({
       ...currentBook,
       author: [...bookToAdd.author, ""],
@@ -105,15 +101,15 @@ function BookForm() {
     }
 
     if (bookToAdd.pages > 999 || bookToAdd.pages < 0) {
-      tempError.pages = "Pages value can be 0-999!";
+      tempError.pages = "Page value can be 0-999!";
     }
 
     if (isNaN(bookToAdd.isbn)) {
       tempError.isbn = "Please provide a valid number!";
     }
 
-    if (bookToAdd.isbn.length > 10) {
-      tempError.isbn = "ISBN can be 10 number max!";
+    if (bookToAdd.isbn.length !== 10) {
+      tempError.isbn = "ISBN must be a 10 digit number!";
     }
 
     setError(tempError);
@@ -131,6 +127,7 @@ function BookForm() {
             label="Book title"
             placeholder="Book title"
             name="title"
+            InputProps={{ disableUnderline: true }}
             onChange={handleChange}
           />
           {error.title && <p className="bookform__error">{error.title}</p>}
@@ -140,6 +137,7 @@ function BookForm() {
             placeholder="Book subtitle"
             name="subtitle"
             onChange={handleChange}
+            InputProps={{ disableUnderline: true }}
           />
           <TextField
             required
@@ -150,6 +148,16 @@ function BookForm() {
             placeholder="Description"
             name="description"
             onChange={handleChange}
+            InputProps={{
+              disableUnderline: true,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <div>
+                    {512 - bookToAdd.description.length} characters remain
+                  </div>
+                </InputAdornment>
+              ),
+            }}
           />
           {error.description && (
             <p className="bookform__error">{error.description}</p>
@@ -161,6 +169,7 @@ function BookForm() {
             label="Publisher"
             placeholder="Publisher name"
             onChange={handleChange}
+            InputProps={{ disableUnderline: true }}
             name="publisher"
           />
           {error.publisher && (
@@ -171,16 +180,17 @@ function BookForm() {
             label="Website"
             placeholder="Website"
             onChange={handleChange}
+            InputProps={{ disableUnderline: true }}
             name="website"
           />
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div>
               <TextField
                 required
-                variant="filled"
                 label="Number of pages"
                 type="number"
                 placeholder="Pages"
+                InputProps={{ disableUnderline: true }}
                 onChange={handleChange}
                 name="pages"
               />
@@ -190,11 +200,10 @@ function BookForm() {
             </div>
             <TextField
               required
-              variant="filled"
-              label="Year"
               type="date"
               onChange={handleChange}
               name="published"
+              InputProps={{ disableUnderline: true }}
             />
           </div>
           <TextField
@@ -204,6 +213,7 @@ function BookForm() {
             placeholder="ISBN"
             onChange={handleChange}
             name="isbn"
+            InputProps={{ disableUnderline: true }}
           />
           {error.isbn && <p className="bookform__error">{error.isbn}</p>}
         </div>
@@ -214,49 +224,47 @@ function BookForm() {
             height="400px"
             width="225px"
           />
-          <AuthorField
-            text={bookToAdd.author[0] !== "" ? bookToAdd.author[0] : " "}
-            showRemove={false}
-            authorChangeValue={(e) => handleAuthorChange(e, 0)}
-            removeAuthorField={() => removeAuthorField(0)}
-          />
-
-          {bookToAdd.author.map((item, index) => {
-            return (
-              index >= 1 && (
+          <div className="bookform__detailscontainer">
+            {bookToAdd.author.map((item, index) => {
+              return (
                 <AuthorField
+                  key={index}
                   text={
                     bookToAdd.author[index] !== ""
                       ? bookToAdd.author[index]
                       : " "
                   }
-                  showRemove={true}
+                  showRemove={index >= 1}
                   authorChangeValue={(e) => handleAuthorChange(e, index)}
                   removeAuthorField={() => removeAuthorField(index)}
                 />
-              )
-            );
-          })}
+              );
+            })}
 
-          {bookToAdd.author.length <= 2 && (
-            <button onClick={addAuthorField}>Add author</button>
-          )}
-          <label>Rating</label>
-          <Rating
-            name="half-rating"
-            defaultValue={2.5}
-            precision={0.5}
-            value={bookToAdd.rating}
-            onChange={(event, newVal) => {
-              setBookToAdd((currentBook) => ({
-                ...currentBook,
-                rating: newVal,
-              }));
-            }}
-          />
+            {bookToAdd.author.length <= 2 && (
+              <button onClick={addAuthorField}>Add author</button>
+            )}
+            <label style={{ marginTop: "30px" }}>Rating</label>
+            <Rating
+              name="half-rating"
+              defaultValue={2.5}
+              precision={0.5}
+              value={bookToAdd.rating}
+              onChange={(event, newVal) => {
+                setBookToAdd((currentBook) => ({
+                  ...currentBook,
+                  rating: newVal,
+                }));
+              }}
+            />
+            <input
+              type="submit"
+              className="bookform__submit"
+              value={"Save book"}
+            />
+          </div>
         </div>
       </div>
-      <input type="submit" />
     </form>
   );
 }

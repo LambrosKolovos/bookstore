@@ -1,7 +1,11 @@
 $header-color: #17262a;
-$background-color: #3fbfbb;
+$background-color: #50ebe6;
 
 $text-dark-color: #17262a;
 $text-light-color: #fff;
 
-$mobile-bp: 780px;
+$mobile-bp: 850px;
+
+body {
+  font-family: "Courier New", Courier, monospace;
+}

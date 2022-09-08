@@ -1,3 +1,5 @@
+@use "../variables";
+
 .main__container {
   display: flex;
   flex-direction: column;
@@ -8,4 +10,24 @@
   display: flex;
   padding: 30px;
   flex-wrap: wrap;
+
+  @media screen and (max-width: 1080px) {
+    justify-content: center;
+  }
+  @media screen and (max-width: 600px) {
+    padding: unset;
+  }
+}
+
+.books {
+  &__search {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 50%;
+    padding: 20px;
+    border-radius: 50px;
+    outline: none;
+    border: 1px solid variables.$text-dark-color;
+    background: lightgoldenrodyellow;
+  }
 }

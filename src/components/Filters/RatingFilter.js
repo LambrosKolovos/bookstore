@@ -21,11 +21,19 @@ function RatingFilter() {
       sx={{ m: 1, minWidth: 120 }}
       className="filters__rating"
     >
-      <InputLabel>Rating</InputLabel>
-      <Select label="Rating" value={rating} onChange={handleRatingFilterChange}>
+      <label className="filters__label">Rating</label>
+      <Select
+        disableUnderline
+        displayEmpty
+        value={rating}
+        onChange={handleRatingFilterChange}
+      >
+        <MenuItem value="">
+          <em>All ratings</em>
+        </MenuItem>
         <MenuItem value={3}>3⭐ or more</MenuItem>
         <MenuItem value={4}>4⭐ or more</MenuItem>
-        <MenuItem value={5}>5⭐</MenuItem>
+        <MenuItem value={5}>5⭐ only</MenuItem>
       </Select>
     </FormControl>
   );

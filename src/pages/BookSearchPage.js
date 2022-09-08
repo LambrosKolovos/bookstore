@@ -74,17 +74,10 @@ function BookSearchPage() {
       {bookAdded && <ToastContainer />}
       <Header />
       <div className="main__container">
-        <TextField
-          variant="outlined"
-          label="Book name"
+        <input
           placeholder="Search for books..."
-          value={searchQuery}
+          className="books__search"
           onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{
-            width: "50%",
-            marginTop: "20px",
-            marginBottom: "20px",
-          }}
         />
 
         <Filters />
@@ -95,7 +88,11 @@ function BookSearchPage() {
                 key={item.isbn}
                 image={item.image}
                 title={item.title}
-                author={item.author}
+                author={
+                  Array.isArray(item.author)
+                    ? item.author.join(", ")
+                    : item.author
+                }
                 rating={item.rating}
                 onClick={() => viewBook(item)}
               />

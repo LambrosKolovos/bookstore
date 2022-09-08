@@ -11,15 +11,21 @@ function AuthorField({
   removeAuthorField,
 }) {
   return (
-    <div style={{ marginBottom: "10px" }}>
+    <div className="author__container">
       <TextField
         onChange={authorChangeValue}
         variant="filled"
         label="Author"
         placeholder="Author"
         value={text}
+        InputProps={{ disableUnderline: true }}
       />
-      {showRemove && <RiDeleteBack2Fill onClick={removeAuthorField} />}
+      {showRemove && (
+        <RiDeleteBack2Fill
+          onClick={removeAuthorField}
+          className="author__removeicon"
+        />
+      )}
     </div>
   );
 }

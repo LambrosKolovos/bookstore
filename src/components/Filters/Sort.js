@@ -21,13 +21,16 @@ function Sort() {
       sx={{ m: 1, minWidth: 120, marginLeft: "60px" }}
       className="filters__sort"
     >
-      <InputLabel>Sort By</InputLabel>
+      <label className="filters__label">Sort by</label>
       <Select
-        label="Sort by"
+        displayEmpty
         value={sort}
         onChange={handleSortChange}
-        defaultValue=""
+        disableUnderline
       >
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
         <MenuItem value={"newSort"}>Newest</MenuItem>
         <MenuItem value={"oldSort"}>Oldest</MenuItem>
         <MenuItem value={"azSort"}>A-Z</MenuItem>

@@ -2,5 +2,20 @@
   &__container {
     display: flex;
     width: 100%;
+
+    .MuiSelect-select {
+      background: lightgoldenrodyellow !important;
+      border: 1px solid black;
+      border-radius: 10px !important;
+      color: black;
+      padding: 10px;
+      margin-top: -10px;
+    }
+
+    .MuiFormLabel-root {
+      font-size: 20px;
+      color: black;
+      z-index: 1;
+    }
   }
 }

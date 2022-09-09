@@ -4,6 +4,8 @@ import BookItem from "../components/BookItem/BookItem";
 import Filters from "../components/Filters/Filters";
 import Header from "../components/Header/Header";
 import noResults from "../assets/noresults.png";
+import peopleReading from "../assets/people-reading.png";
+import searchlogo from "../assets/searchlogo.png";
 
 import "./_bookSearchPage.scss";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -89,13 +91,26 @@ function BookSearchPage() {
     <div>
       {bookAdded && <ToastContainer />}
       <Header />
-      <div className="main__container">
-        <input
-          placeholder="Search for books..."
-          className="books__search"
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-
+      <div className="upper__container">
+        <div className="upper__left">
+          <h2>
+            A room without books is like
+            <br /> a body without a soul.
+          </h2>
+        </div>
+        <div className="upper__right">
+          <img src={searchlogo} />
+          <div className="upper__right-search">
+            <input
+              placeholder="Search for books..."
+              className="books__search"
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <img src={peopleReading} alt="people-reading" />
+        </div>
+      </div>
+      <div className="results__container">
         <Filters />
         {searchedBooks.length > 0 ? (
           <div className="books__container">
@@ -117,9 +132,9 @@ function BookSearchPage() {
             })}
           </div>
         ) : (
-          <div style={{ marginTop: "100px" }}>
-            <img src={noResults} width="300px" height={"300px"} />
-            <div style={{ textAlign: "center" }}> No results found!</div>
+          <div className="noresult__container">
+            <img src={noResults} width="400px" />
+            <div style={{ textAlign: "center" }}> No books found!</div>
           </div>
         )}
       </div>

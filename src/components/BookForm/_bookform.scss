@@ -15,21 +15,28 @@
   &__leftcol {
     display: flex;
     flex-direction: column;
-    flex: 0.5;
-    -webkit-box-shadow: -4px 3px 20px -2px rgba(0, 0, 0, 0.44);
+    flex: 0.8;
     box-shadow: -4px 3px 20px -2px rgba(0, 0, 0, 0.44);
+    border-radius: 10px;
     justify-content: center;
+    background: variables.$secondary-color;
 
     .MuiTextField-root {
       margin-top: 20px !important;
       margin-left: 20px !important;
       margin-right: 20px !important;
+      background-color: variables.$secondary-color;
     }
 
     .MuiInputBase-root {
       position: relative;
     }
-
+    .MuiFormLabel-root {
+      color: variables.$dark-color;
+    }
+    .MuiFormLabel-root.Mui-focused {
+      color: variables.$dark-color;
+    }
     .MuiInputAdornment-root {
       position: absolute;
       bottom: 20px;
@@ -40,6 +47,14 @@
   &__detailscontainer {
     display: flex;
     flex-direction: column;
+    background: variables.$secondary-color;
+    box-shadow: -4px 3px 20px -2px rgba(0, 0, 0, 0.44);
+    border-radius: 10px;
+    padding: 20px;
+
+    .MuiFormLabel-root.Mui-focused {
+      color: variables.$dark-color;
+    }
     .author__container:first-of-type::after {
       content: "";
       width: 50px;
@@ -58,13 +73,15 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 30px;
+    align-items: center;
+
     @media screen and (max-width: variables.$mobile-bp) {
       flex-direction: row;
+      justify-content: center;
     }
+
     @media screen and (max-width: 600px) {
       flex-direction: column;
-      align-items: center;
     }
 
     img {
@@ -81,12 +98,34 @@
     }
   }
 
+  &__numbers {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @media screen and (max-width: 500px) {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: unset;
+    }
+  }
+
+  &__rating {
+    display: flex;
+    flex-direction: column;
+    margin-right: 50px;
+    @media screen and (max-width: 500px) {
+      margin-left: 20px;
+      margin-top: 20px;
+      margin-right: unset;
+    }
+  }
+
   &__sectionheader {
     margin-top: 20px;
     margin-left: 20px;
     font-size: 20px;
     font-weight: bold;
-    color: variables.$text-dark-color;
+    color: variables.$dark-color;
   }
 
   &__error {
@@ -94,7 +133,6 @@
     margin-top: 5px;
     margin-left: 20px;
     font-size: 14px;
-    font-weight: bold;
 
     &-author {
       margin-left: unset;
@@ -114,13 +152,13 @@
     font-size: 20px;
     border-radius: 5px;
     border: 1px solid black;
-    background: variables.$text-dark-color;
+    background: variables.$dark-color;
     color: white;
 
     &:hover {
       background: white;
-      color: variables.$text-dark-color;
-      border: 1px solid variables.$text-dark-color;
+      color: variables.$dark-color;
+      border: 1px solid variables.$dark-color;
       cursor: pointer;
     }
   }
@@ -135,6 +173,6 @@
   &__removeicon {
     font-size: 35px;
     margin-left: 15px;
-    color: variables.$text-dark-color;
+    color: variables.$dark-color;
   }
 }

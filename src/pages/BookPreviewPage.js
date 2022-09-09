@@ -1,20 +1,48 @@
 import { Button, Rating } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../components/Header/Header";
 import { AiOutlineHeart, AiOutlineShareAlt } from "react-icons/ai";
+import { TbHeartOff } from "react-icons/tb";
 
 import "./_bookPreviewPage.scss";
 
 function BookPreviewPage() {
   const { state } = useLocation();
   const { bookToDisplay } = state;
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    setIsFavorite(
+      JSON.parse(localStorage.getItem("favorites")).includes(bookToDisplay.isbn)
+    );
+  }, [isFavorite]);
+
+  const addFavoriteBook = (isbn) => {
+    var tempFavs = JSON.parse(localStorage.getItem("favorites")) || [];
+    tempFavs = [...tempFavs, isbn];
+
+    setIsFavorite(true);
+    localStorage.setItem("favorites", JSON.stringify(tempFavs));
+  };
+
+  const removeFavorite = (isbn) => {
+    var tempFavs = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    tempFavs = tempFavs.filter((bookIsbn) => bookIsbn !== isbn);
+    setIsFavorite(false);
+    localStorage.setItem("favorites", JSON.stringify(tempFavs));
+  };
   return (
     <div>
       <Header />
       <div className="bookpreview__wrapper">
         <div className="bookpreview__leftcontainer">
-          <img className="bookpreview__image" src={bookToDisplay.image} />
+          <img
+            className="bookpreview__image"
+            src={bookToDisplay.image}
+            alt="book cover"
+          />
           <div className="bookpreview__author">{bookToDisplay.author}</div>
           <div>
             <Rating
@@ -31,18 +59,35 @@ function BookPreviewPage() {
             {bookToDisplay.description}
           </div>
           <div>
-            <Button
-              variant="outlined"
-              startIcon={<AiOutlineHeart />}
-              style={{
-                color: "white",
-                background: "red",
-                border: "none",
-                marginRight: "20px",
-              }}
-            >
-              Favorite
-            </Button>
+            {isFavorite ? (
+              <Button
+                variant="outlined"
+                startIcon={<TbHeartOff />}
+                onClick={() => removeFavorite(bookToDisplay.isbn)}
+                style={{
+                  color: "red",
+                  background: "white",
+                  border: "1px solid red",
+                  marginRight: "20px",
+                }}
+              >
+                Unfavorite
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                startIcon={<AiOutlineHeart />}
+                onClick={() => addFavoriteBook(bookToDisplay.isbn)}
+                style={{
+                  color: "white",
+                  background: "red",
+                  border: "none",
+                  marginRight: "20px",
+                }}
+              >
+                Favorite
+              </Button>
+            )}
             <Button
               variant="outlined"
               startIcon={<AiOutlineShareAlt />}
@@ -68,7 +113,7 @@ function BookPreviewPage() {
           <div>
             <b>ISBN-10</b>: {bookToDisplay.isbn}
           </div>
-          <div>
+          <div className="bookpreview__website">
             <b>Website</b>:
             {bookToDisplay.website
               ? " " + bookToDisplay.website

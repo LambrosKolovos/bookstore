@@ -1,4 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   rating: 0,
@@ -6,6 +6,7 @@ const initialState = {
   zaSort: false,
   newSort: false,
   oldSort: false,
+  favorite: false,
 };
 
 export const filterSlice = createSlice({
@@ -39,10 +40,17 @@ export const filterSlice = createSlice({
     setRatingFilter: (state, action) => {
       state.rating = action.payload;
     },
+
+    setFavoriteFilter: (state, action) => {
+      action.payload === "favorite"
+        ? (state.favorite = true)
+        : (state.favorite = false);
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setSortingOption, setRatingFilter } = filterSlice.actions;
+export const { setSortingOption, setRatingFilter, setFavoriteFilter } =
+  filterSlice.actions;
 
 export default filterSlice.reducer;

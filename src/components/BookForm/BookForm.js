@@ -224,7 +224,7 @@ function BookForm() {
             height="400px"
             width="225px"
           />
-          <div className="bookform__detailscontainer">
+          <div className="bookform__authorcontainer">
             {bookToAdd.author.map((item, index) => {
               return (
                 <AuthorField

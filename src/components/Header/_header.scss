@@ -9,6 +9,11 @@
     color: variables.$text-light-color;
   }
 
+  &__logo {
+    border-right: 1px solid white;
+    padding-right: 20px;
+  }
+
   &__left {
     display: flex;
 
@@ -21,4 +26,8 @@
 .link {
   text-decoration: none;
   color: unset;
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 8px;
+  }
 }

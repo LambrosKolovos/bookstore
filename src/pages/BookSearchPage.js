@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import BookItem from "../components/BookItem/BookItem";
 import Filters from "../components/Filters/Filters";
 import Header from "../components/Header/Header";
-import TextField from "@mui/material/TextField";
+import noResults from "../assets/noresults.png";
 
 import "./_bookSearchPage.scss";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function BookSearchPage() {
   const { booksDB } = useSelector((state) => state.books);
-  const { rating, azSort, zaSort, newSort, oldSort } = useSelector(
+  const { rating, azSort, zaSort, newSort, oldSort, favorite } = useSelector(
     (state) => state.filters
   );
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,7 +23,11 @@ function BookSearchPage() {
   const { bookAdded } = state || false;
 
   useEffect(() => {
-    if (bookAdded)
+    if (bookAdded) {
+      var booksToStore = JSON.parse(localStorage.getItem("booksStored")) || [];
+      booksToStore = [...booksToStore, booksDB[booksDB.length - 1]];
+      localStorage.setItem("booksStored", JSON.stringify(booksToStore));
+
       toast.success("Book successfully added", {
         position: "top-right",
         autoClose: 3000,
@@ -33,10 +37,17 @@ function BookSearchPage() {
         progress: undefined,
         theme: "colored",
       });
-  }, [bookAdded]);
+    }
+  }, [bookAdded, booksDB]);
 
   const filteredBooks = useMemo(() => {
-    const tempArr = [...booksDB];
+    var tempArr = [...booksDB];
+    if (localStorage.getItem("booksStored") !== null) {
+      JSON.parse(localStorage.getItem("booksStored")).map((item) => {
+        return (tempArr = [...tempArr, item]);
+      });
+    }
+
     if (azSort) return tempArr.sort((a, b) => a.title.localeCompare(b.title));
     if (zaSort) return tempArr.sort((b, a) => a.title.localeCompare(b.title));
     if (newSort)
@@ -52,15 +63,20 @@ function BookSearchPage() {
   }, [booksDB, azSort, zaSort, newSort, oldSort]);
 
   const searchedBooks = useMemo(() => {
-    return filteredBooks.filter(
+    const favBooks = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    const results = filteredBooks.filter(
       (book) =>
         book.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
         book.rating >= rating
     );
-  }, [filteredBooks, searchQuery, rating]);
+
+    if (favorite) {
+      return results.filter((book) => favBooks.includes(book.isbn));
+    } else return results;
+  }, [filteredBooks, searchQuery, rating, favorite]);
 
   const viewBook = (book) => {
-    console.log(book.isbn);
     navigate("../view/" + book.isbn, {
       replace: true,
       state: {
@@ -81,24 +97,31 @@ function BookSearchPage() {
         />
 
         <Filters />
-        <div className="books__container">
-          {searchedBooks.map((item) => {
-            return (
-              <BookItem
-                key={item.isbn}
-                image={item.image}
-                title={item.title}
-                author={
-                  Array.isArray(item.author)
-                    ? item.author.join(", ")
-                    : item.author
-                }
-                rating={item.rating}
-                onClick={() => viewBook(item)}
-              />
-            );
-          })}
-        </div>
+        {searchedBooks.length > 0 ? (
+          <div className="books__container">
+            {searchedBooks.map((item) => {
+              return (
+                <BookItem
+                  key={item.isbn}
+                  image={item.image}
+                  title={item.title}
+                  author={
+                    Array.isArray(item.author)
+                      ? item.author.join(", ")
+                      : item.author
+                  }
+                  rating={item.rating}
+                  onClick={() => viewBook(item)}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <div style={{ marginTop: "100px" }}>
+            <img src={noResults} width="300px" height={"300px"} />
+            <div style={{ textAlign: "center" }}> No results found!</div>
+          </div>
+        )}
       </div>
     </div>
   );

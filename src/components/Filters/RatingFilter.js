@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import "./_filters.scss";
 import { setRatingFilter } from "../../redux/filterSlice";
 import { useDispatch } from "react-redux";

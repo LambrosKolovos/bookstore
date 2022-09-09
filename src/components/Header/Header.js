@@ -6,7 +6,7 @@ function Header() {
   return (
     <div className="header__container">
       <div className="header__left">
-        <div>BOOKSTORE</div>
+        <div className="header__logo">BOOKSTORE</div>
         <Link to="/search" className="header__left-search link">
           Search
         </Link>

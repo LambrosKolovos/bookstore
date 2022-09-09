@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import "./_filters.scss";
 import { useDispatch } from "react-redux";
 import { setSortingOption } from "../../redux/filterSlice";
@@ -18,7 +17,7 @@ function Sort() {
   return (
     <FormControl
       variant="standard"
-      sx={{ m: 1, minWidth: 120, marginLeft: "60px" }}
+      sx={{ m: 1, minWidth: 120 }}
       className="filters__sort"
     >
       <label className="filters__label">Sort by</label>

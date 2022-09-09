@@ -12,6 +12,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { booksData } from "../booksData";
 
 function BookSearchPage() {
   const { booksDB } = useSelector((state) => state.books);
@@ -24,12 +25,20 @@ function BookSearchPage() {
   const { state } = useLocation();
   const { bookAdded } = state || false;
 
+  const populateLocalStorage = () => {
+    if (JSON.parse(localStorage.getItem("booksStored")) === null) {
+      localStorage.setItem("booksStored", JSON.stringify(booksDB));
+    }
+
+    if (JSON.parse(localStorage.getItem("favorites")) === null) {
+      localStorage.setItem("favorites", JSON.stringify([]));
+    }
+  };
+
+  populateLocalStorage();
+
   useEffect(() => {
     if (bookAdded) {
-      var booksToStore = JSON.parse(localStorage.getItem("booksStored")) || [];
-      booksToStore = [...booksToStore, booksDB[booksDB.length - 1]];
-      localStorage.setItem("booksStored", JSON.stringify(booksToStore));
-
       toast.success("Book successfully added", {
         position: "top-right",
         autoClose: 3000,
@@ -40,15 +49,12 @@ function BookSearchPage() {
         theme: "colored",
       });
     }
-  }, [bookAdded, booksDB]);
+
+    window.history.replaceState({}, document.title);
+  }, [bookAdded]);
 
   const filteredBooks = useMemo(() => {
-    var tempArr = [...booksDB];
-    if (localStorage.getItem("booksStored") !== null) {
-      JSON.parse(localStorage.getItem("booksStored")).map((item) => {
-        return (tempArr = [...tempArr, item]);
-      });
-    }
+    var tempArr = JSON.parse(localStorage.getItem("booksStored"));
 
     if (azSort) return tempArr.sort((a, b) => a.title.localeCompare(b.title));
     if (zaSort) return tempArr.sort((b, a) => a.title.localeCompare(b.title));
@@ -62,7 +68,7 @@ function BookSearchPage() {
       );
 
     return tempArr;
-  }, [booksDB, azSort, zaSort, newSort, oldSort]);
+  }, [azSort, zaSort, newSort, oldSort]);
 
   const searchedBooks = useMemo(() => {
     const favBooks = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -89,7 +95,7 @@ function BookSearchPage() {
 
   return (
     <div>
-      {bookAdded && <ToastContainer />}
+      <ToastContainer />
       <Header />
       <div className="upper__container">
         <div className="upper__left">
@@ -114,7 +120,7 @@ function BookSearchPage() {
         <Filters />
         {searchedBooks.length > 0 ? (
           <div className="books__container">
-            {searchedBooks.map((item) => {
+            {searchedBooks.map((item, index) => {
               return (
                 <BookItem
                   key={item.isbn}
@@ -127,6 +133,7 @@ function BookSearchPage() {
                   }
                   rating={item.rating}
                   onClick={() => viewBook(item)}
+                  index={index}
                 />
               );
             })}

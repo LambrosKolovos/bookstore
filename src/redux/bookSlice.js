@@ -11,7 +11,11 @@ export const bookSlice = createSlice({
   reducers: {
     insertBook: (state, book) => {
       state.booksDB = [...state.booksDB, book.payload];
-      console.log(state.booksDB);
+      const updatedBookArr = [
+        ...JSON.parse(localStorage.getItem("booksStored")),
+        book.payload,
+      ];
+      localStorage.setItem("booksStored", JSON.stringify(updatedBookArr));
     },
   },
 });

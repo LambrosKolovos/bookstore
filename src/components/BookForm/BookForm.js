@@ -85,6 +85,10 @@ function BookForm() {
       tempError.title = "Title should be 10-120 characters long!";
     }
 
+    if (!bookToAdd.title.match("^[a-zA-Z0-9\\s@”.&:#*!]+$")) {
+      tempError.title = "Sepcial characters allowed: ! @ # & * ";
+    }
+
     if (bookToAdd.description.length > 512) {
       tempError.description = "Description can be 512 characters long!";
     }
@@ -100,6 +104,14 @@ function BookForm() {
       tempError.publisher = "Publisher name should be 5-60 characters long!";
     }
 
+    if (
+      bookToAdd.website.length >= 1 &&
+      !bookToAdd.website.match(
+        /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g
+      )
+    ) {
+      tempError.website = "Enter a valid website!";
+    }
     if (bookToAdd.pages > 999 || bookToAdd.pages < 0) {
       tempError.pages = "Page value can be 0-999!";
     }
@@ -108,8 +120,16 @@ function BookForm() {
       tempError.isbn = "Please provide a valid number!";
     }
 
-    if (bookToAdd.isbn.length !== 10) {
-      tempError.isbn = "ISBN must be a 10 digit number!";
+    if (bookToAdd.isbn.length !== 1) {
+      tempError.isbn = "ISBN must be a 13 digit number!";
+    }
+
+    var emptyAuthorFields = bookToAdd.author.filter(
+      (name) => name === ""
+    ).length;
+
+    if (bookToAdd.author.length === emptyAuthorFields) {
+      tempError.author = "Enter at least an author!";
     }
 
     setError(tempError);
@@ -183,6 +203,7 @@ function BookForm() {
             InputProps={{ disableUnderline: true }}
             name="website"
           />
+          {error.website && <p className="bookform__error">{error.website}</p>}
           <div className="bookform__numbers">
             <div>
               <TextField
@@ -255,7 +276,7 @@ function BookForm() {
                 />
               );
             })}
-
+            {error.author && <p className="bookform__error">{error.author}</p>}
             {bookToAdd.author.length <= 2 && (
               <button onClick={addAuthorField}>Add author</button>
             )}

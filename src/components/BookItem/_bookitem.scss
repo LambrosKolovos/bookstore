@@ -9,18 +9,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     border-radius: 5px;
     transform: scale(1);
     transition: all 225ms ease-in-out;
-    background-color: #42cac5;
-    -webkit-box-shadow: -4px 3px 20px -2px rgba(0, 0, 0, 0.44);
-    box-shadow: -4px 3px 20px -2px rgba(0, 0, 0, 0.44);
+    background-color: variables.$secondary-color;
+    box-shadow: 0 5px 5px rgba(212, 185, 150, 0.5);
+    position: relative;
 
     &:hover {
       cursor: pointer;
-      transform: scale(1.1);
-      border: 1px solid black;
+      transform: scale(0.9);
+      background-color: rgba(255, 255, 255, 0.85);
     }
   }
   &__author {
@@ -28,19 +27,34 @@
     font-size: 14px;
     color: black;
     margin: 5px;
+    min-height: 20px;
   }
   &__title {
     margin-top: 10px;
     text-align: center;
     font-size: 16px;
     font-weight: bold;
-    color: variables.$text-light-color;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    color: variables.$secondary-color;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* number of lines to show */
-    line-clamp: 2;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    height: 36.8px;
+    color: variables.$dark-color;
+    font-weight: bold;
+    height: 40px;
+  }
+
+  &__rating {
+    position: absolute;
+    bottom: 50px;
+  }
+  &__buy {
+    background-color: variables.$dark-color;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    position: absolute;
+    bottom: 10px;
   }
 }

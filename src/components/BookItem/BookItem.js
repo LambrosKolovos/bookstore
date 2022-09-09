@@ -8,7 +8,7 @@ function BookItem({ image, title, author, rating, onClick }) {
       <img src={image} height="300" width="200" alt="book cover" />
       <div className="bookitem__title">{title}</div>
       <div className="bookitem__author">{author}</div>
-      <div>
+      <div className="bookitem__rating">
         <Rating
           name="half-rating-read"
           value={rating}
@@ -16,6 +16,7 @@ function BookItem({ image, title, author, rating, onClick }) {
           readOnly
         />
       </div>
+      <button className="bookitem__buy">Buy now</button>
     </div>
   );
 }

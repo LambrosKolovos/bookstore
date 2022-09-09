@@ -1,18 +1,23 @@
+@use "../../variables";
 .filters {
   &__container {
     display: flex;
-    width: 100%;
-    justify-content: center;
+    margin-top: 50px;
+    margin-left: 50px;
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 500px) {
       flex-direction: column;
       align-items: center;
       margin-left: unset;
     }
 
+    label {
+      color: variables.$secondary-color;
+      font-size: 20px;
+    }
     .MuiSelect-select {
-      background: lightgoldenrodyellow !important;
-      border: 1px solid black;
+      background: variables.$secondary-color !important;
+      border: 1px solid variables;
       border-radius: 10px !important;
       color: black;
       padding: 10px;
@@ -21,8 +26,14 @@
 
     .MuiFormLabel-root {
       font-size: 20px;
-      color: black;
+      color: variables.$dark-color;
       z-index: 1;
+    }
+
+    .MuiList-root {
+      li {
+        background: variables.$secondary-color !important;
+      }
     }
   }
 }

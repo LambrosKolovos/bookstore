@@ -183,7 +183,7 @@ function BookForm() {
             InputProps={{ disableUnderline: true }}
             name="website"
           />
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="bookform__numbers">
             <div>
               <TextField
                 required
@@ -194,10 +194,9 @@ function BookForm() {
                 onChange={handleChange}
                 name="pages"
               />
-              {error.description && (
-                <p className="bookform__error">{error.pages}</p>
-              )}
+              {error.pages && <p className="bookform__error">{error.pages}</p>}
             </div>
+
             <TextField
               required
               type="date"
@@ -205,6 +204,21 @@ function BookForm() {
               name="published"
               InputProps={{ disableUnderline: true }}
             />
+            <div className="bookform__rating">
+              <label>Rating</label>
+              <Rating
+                name="half-rating"
+                defaultValue={2.5}
+                precision={0.5}
+                value={bookToAdd.rating}
+                onChange={(event, newVal) => {
+                  setBookToAdd((currentBook) => ({
+                    ...currentBook,
+                    rating: newVal,
+                  }));
+                }}
+              />
+            </div>
           </div>
           <TextField
             required
@@ -215,6 +229,7 @@ function BookForm() {
             name="isbn"
             InputProps={{ disableUnderline: true }}
           />
+
           {error.isbn && <p className="bookform__error">{error.isbn}</p>}
         </div>
         <div className="bookform__rightcol">
@@ -224,7 +239,7 @@ function BookForm() {
             height="400px"
             width="225px"
           />
-          <div className="bookform__authorcontainer">
+          <div className="bookform__detailscontainer  ">
             {bookToAdd.author.map((item, index) => {
               return (
                 <AuthorField
@@ -244,19 +259,6 @@ function BookForm() {
             {bookToAdd.author.length <= 2 && (
               <button onClick={addAuthorField}>Add author</button>
             )}
-            <label style={{ marginTop: "30px" }}>Rating</label>
-            <Rating
-              name="half-rating"
-              defaultValue={2.5}
-              precision={0.5}
-              value={bookToAdd.rating}
-              onChange={(event, newVal) => {
-                setBookToAdd((currentBook) => ({
-                  ...currentBook,
-                  rating: newVal,
-                }));
-              }}
-            />
             <input
               type="submit"
               className="bookform__submit"
